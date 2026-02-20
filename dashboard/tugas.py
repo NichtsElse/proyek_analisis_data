@@ -16,10 +16,14 @@ df = load_data()
 st.title("🚲 Bike Sharing Dashboard")
 
 
-col1, col2, col3 = st.columns(3)
-col1.metric("Total Rental", int(df['cnt'].sum()))
-col2.metric("Average Rental", round(df['cnt'].mean(),2))
-col3.metric("Peak Month", int(df.groupby('mnth')['cnt'].mean().idxmax()))
+# Metric Columns
+col1, col2 = st.columns(2)
+with col1:
+    total_registered = hour_df.registered.sum()
+    st.metric("Total pengendara terdaftar", value=total_registered)
+with col2:
+    total_casual = hour_df.casual.sum()
+    st.metric("Total pengendara casual", value=total_casual)
 
 
 st.sidebar.header("Interactive Filter")
@@ -89,5 +93,6 @@ st.write("""
 - Kelembapan tinggi menurunkan permintaan
 - Angin sedang menghasilkan permintaan tertinggi
 """)
+
 
 
