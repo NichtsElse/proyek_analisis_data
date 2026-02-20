@@ -7,39 +7,42 @@ st.set_page_config(page_title="Bike Sharing Dashboard", layout="wide")
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("dashboard/main_data.csv")  
+    df = pd.read_csv("main_data.csv")
+    return df
+
 
 df = load_data()
 
-st.title("🚲 Bike Sharing Dashboard")
+st.title("🚲 Advanced Bike Sharing Dashboard")
 
 
 col1, col2 = st.columns(2)
 with col1:
-    st.metric("Total pengendara terdaftar", int(df["registered"].sum()))
+    total_registered = df.registered.sum()
+    st.metric("Total pengendara terdaftar", value=total_registered)
 with col2:
-    st.metric("Total pengendara casual", int(df["casual"].sum()))
+    total_casual = df.casual.sum()
+    st.metric("Total pengendara casual", value=total_casual)
 
 
 st.sidebar.header("Interactive Filter")
-workingday = st.sidebar.selectbox("Working Day", ["All", "Weekday", "Weekend"])
-
-filtered_df = df.copy()
+workingday = st.sidebar.selectbox("Working Day", ["All","Weekday","Weekend"])
 
 if workingday == "Weekday":
-    filtered_df = filtered_df[filtered_df["workingday"] == 1]
+    df = df[df['workingday']==1]
 elif workingday == "Weekend":
-    filtered_df = filtered_df[filtered_df["workingday"] == 0]
+    df = df[df['workingday']==0]
 
 
 st.subheader("📊 Monthly Seasonality")
-
 fig1, ax1 = plt.subplots()
-monthly = filtered_df.groupby("mnth")["cnt"].mean().sort_index()
-monthly.plot(marker="o", ax=ax1)
-ax1.set_xlabel("Month")
-ax1.set_ylabel("Average Rentals")
+df.groupby('mnth')['cnt'].mean().plot(marker='o', ax=ax1)
 st.pyplot(fig1)
+
+df['temp_cat'] = pd.cut(df['temp'], bins=3, labels=['Dingin','Sedang','Panas'])
+df['hum_cat'] = pd.cut(df['hum'], bins=3, labels=['Rendah','Sedang','Tinggi'])
+df['wind_cat'] = pd.cut(df['windspeed'], bins=3, labels=['Lambat','Sedang','Kencang'])
+
 
 tab1, tab2, tab3 = st.tabs(["Suhu","Kelembapan","Kecepatan Angin"])
 
