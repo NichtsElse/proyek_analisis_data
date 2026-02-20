@@ -13,21 +13,17 @@ def load_data():
 
 df = load_data()
 
-st.title("🚲 Advanced Bike Sharing Dashboard")
+st.title("🚲 Bike Sharing Dashboard")
 
-# ================= KPI =================
+
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Rental", int(df['cnt'].sum()))
 col2.metric("Average Rental", round(df['cnt'].mean(),2))
 col3.metric("Peak Month", int(df.groupby('mnth')['cnt'].mean().idxmax()))
 
-# ================= Sidebar Filter =================
+
 st.sidebar.header("Interactive Filter")
-month = st.sidebar.multiselect("Month", sorted(df['mnth'].unique()), default=sorted(df['mnth'].unique()))
 workingday = st.sidebar.selectbox("Working Day", ["All","Weekday","Weekend"])
-
-df = df[df['mnth'].isin(month)]
-
 if workingday == "Weekday":
     df = df[df['workingday']==1]
 elif workingday == "Weekend":
@@ -93,4 +89,5 @@ st.write("""
 - Kelembapan tinggi menurunkan permintaan
 - Angin sedang menghasilkan permintaan tertinggi
 """)
+
 
