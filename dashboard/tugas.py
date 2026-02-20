@@ -15,16 +15,6 @@ df = load_data()
 
 st.title("🚲 Advanced Bike Sharing Dashboard")
 
-
-col1, col2 = st.columns(2)
-with col1:
-    total_registered = df.registered.sum()
-    st.metric("Total pengendara terdaftar", value=total_registered)
-with col2:
-    total_casual = df.casual.sum()
-    st.metric("Total pengendara casual", value=total_casual)
-
-
 st.sidebar.header("Interactive Filter")
 workingday = st.sidebar.selectbox("Working Day", ["All","Weekday","Weekend"])
 
@@ -33,6 +23,14 @@ if workingday == "Weekday":
 elif workingday == "Weekend":
     df = df[df['workingday']==0]
 
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric("Total Rental", int(df['cnt'].sum()))
+col2.metric("Average Rental", round(df['cnt'].mean(),2))
+
+peak_month = df.groupby('mnth')['cnt'].mean().idxmax()
+col3.metric("Peak Month", int(peak_month))
 
 st.subheader("📊 Monthly Seasonality")
 fig1, ax1 = plt.subplots()
@@ -93,4 +91,5 @@ st.write("""
 - Kelembapan tinggi menurunkan permintaan
 - Angin sedang menghasilkan permintaan tertinggi
 """)
+
 
