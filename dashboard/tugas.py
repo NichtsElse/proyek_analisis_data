@@ -19,10 +19,10 @@ st.title("🚲 Bike Sharing Dashboard")
 # Metric Columns
 col1, col2 = st.columns(2)
 with col1:
-    total_registered = hour_df.registered.sum()
+    total_registered = main_data.registered.sum()
     st.metric("Total pengendara terdaftar", value=total_registered)
 with col2:
-    total_casual = hour_df.casual.sum()
+    total_casual = main_data.casual.sum()
     st.metric("Total pengendara casual", value=total_casual)
 
 
@@ -93,6 +93,7 @@ st.write("""
 - Kelembapan tinggi menurunkan permintaan
 - Angin sedang menghasilkan permintaan tertinggi
 """)
+
 
 
 
