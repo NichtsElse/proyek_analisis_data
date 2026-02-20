@@ -7,7 +7,7 @@ st.set_page_config(page_title="Bike Sharing Dashboard", layout="wide")
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("main_data.csv")  
+    return pd.read_csv("dashboard/main_data.csv")  
 
 df = load_data()
 
@@ -76,3 +76,4 @@ st.markdown("""
 - Kelembapan tinggi menurunkan permintaan  
 - Angin sedang menghasilkan permintaan tertinggi  
 """)
+
